@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class HomeController extends Controller
@@ -12,6 +13,10 @@ class HomeController extends Controller
     	$friends = ['acel', 'tifani', 'dll'];
     	$groups = ['dogs', 'corgi'];
         return view('home', compact('user', 'friends', 'groups'));
+    }
+
+    public function login(Request $request) {
+    	
     }
 }
 

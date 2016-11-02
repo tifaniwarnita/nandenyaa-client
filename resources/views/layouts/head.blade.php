@@ -4,4 +4,4 @@
 
 <!-- CSS -->
 <link rel="stylesheet" href="css/bootstrap.min.css">
-<!-- <link rel="stylesheet" href="css/font-awesome-min.css"> -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
