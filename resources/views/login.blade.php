@@ -20,7 +20,12 @@
                                 <input id="login-form-password" name="password" type="password" class="form-control" placeholder="Enter password">
                             </div>
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                            <button type="submit" class="pull-right btn btn-success">Submit</button>
+                            <div class="form-group">
+                                <button type="submit" class="pull-right btn btn-success">Submit</button>
+                            </div>
+                            <div class="form-group">
+                                <a href="{{ url('/register') }}" class="text text-center">Not registered? Click here!</a>
+                            </div>
                         </form>
                     </div>
                 </div>
