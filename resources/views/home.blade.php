@@ -229,7 +229,32 @@
                 <div class="panel-content">
                     <div class="nano">
                         <ul class="chat">
-                            
+                            <li class="left clearfix">
+                                <span class="chat-img pull-left">
+                                    <img src="/user_default.jpg" alt="User Avatar">
+                                </span>
+                                <div class="chat-body clearfix">
+                                    <div class="header">
+                                        <strong class="primary-font">tifani</strong>
+                                    </div>
+                                    <p>
+                                        Created with RabbitMQ
+                                    </p>
+                                </div>
+                            </li>
+                            <li class="right clearfix">
+                                <span class="chat-img pull-right">
+                                    <img src="/user_default.jpg" alt="User Avatar">
+                                </span>
+                                <div class="chat-body clearfix">
+                                    <div class="header">
+                                        <strong class="primary-font">acel</strong>
+                                    </div>
+                                    <p>
+                                        Laravel 5.3
+                                    </p>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                 </div>
