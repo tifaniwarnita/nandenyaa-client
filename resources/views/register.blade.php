@@ -12,16 +12,16 @@
                     <div class="container-fluid padding-20">
                         <form action="{{ url('/register') }}" method="post">
                             <div class="form-group">
-                                <label for="login-form-username">Username</label>
-                                <input id="login-form-username" name="username" type="text" class="form-control" placeholder="Enter username">
+                                <label for="register-form-username">Username</label>
+                                <input id="register-form-username" name="username" type="text" class="form-control" placeholder="Enter username">
                             </div>
                             <div class="form-group">
-                                <label for="login-form-password">Password</label>
-                                <input id="login-form-password" name="password" type="password" class="form-control" placeholder="Enter password">
+                                <label for="register-form-password">Password</label>
+                                <input id="register-form-password" name="password" type="password" class="form-control" placeholder="Enter password">
                             </div>
                             <div class="form-group">
-                                <label for="login-form-password-confirmation">Password Confirmation</label>
-                                <input id="login-form-password-confirmation" name="password-confirmation" type="password" class="form-control" placeholder="Enter password confirmation">
+                                <label for="register-form-password-confirmation">Password Confirmation</label>
+                                <input id="register-form-password-confirmation" name="password-confirmation" type="password" class="form-control" placeholder="Enter password confirmation">
                             </div>
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <div class="form-group">

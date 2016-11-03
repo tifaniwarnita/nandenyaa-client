@@ -18,4 +18,4 @@ Route::get('/register', function () {
 		return view('register');
 });
 Route::post('/register', ['as' => 'login', 'uses' => 'HomeController@register']);
-Route::get('/', ['as' => 'home', 'uses' => 'HomeController@index']);
+Route::get('/home', ['as' => 'home', 'uses' => 'HomeController@index']);

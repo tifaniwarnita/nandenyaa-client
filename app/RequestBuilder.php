@@ -1,7 +1,9 @@
 <?php
-	require_once __DIR__ . '/constants.php';
+namespace App;
+
+use App\Constants;
 	
-	class RequestBuilder {
+class RequestBuilder {
     public static function buildRegisterMessage($username, $password) {
         $message = array(
         	Constants::REQUEST_TYPE => Constants::REGISTER,
@@ -130,5 +132,5 @@
         	Constants::DATE_TIME => microtime());
         return json_encode($message);
     }
-	}
+}
 ?>

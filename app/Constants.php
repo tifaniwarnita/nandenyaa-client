@@ -1,5 +1,7 @@
 <?php
-	class Constants {
+namespace App;
+
+class Constants {
     const SERVER_ADDRESS = "localhost";
     const SERVER_QUEUERE_NAME = "rpc_nandenyaa";
     const EXCHANGE_NAME = "nandenyaa_exchange";
@@ -41,5 +43,5 @@
     const FRIENDS = "friends";
     const GROUPS = "groups";
     const GROUP_MEMBERS = "group_members";
-	}
+}
 ?>
