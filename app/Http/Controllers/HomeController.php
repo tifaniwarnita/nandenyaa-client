@@ -62,7 +62,31 @@ class HomeController extends Controller
         // echo " [.] Got ", json_encode($response), "\n\n\n <br>";
         $status = Constants::STATUS;
         if(strcmp($response->$status, Constants::SUCCESS) == 0) {
-            return response()->view('home');
+            $this->active_user = $vals['username'];
+            $friends = [];
+            $groups = [];
+
+            // Get Friends
+            $response = json_decode($this->call(RequestBuilder::buildGetFriendsMessage($this->active_user)));
+            $friends = $response->friends;
+
+            // TO-DO
+            // Get chat from each friend
+
+            // Get Groups
+            $response = json_decode($this->call(RequestBuilder::buildGetGroupsMessage($this->active_user)));
+            $groups = $response->groups;
+
+            // TO-DO
+            // Get chat from each group
+
+            $data = [
+                'user' => $this->active_user,
+                'friends' => $friends,
+                'groups' => $groups
+            ];
+
+            return response()->view('home', ['data' => $data], 200);
         } else {
             return response()->view('login');
         }
@@ -75,7 +99,6 @@ class HomeController extends Controller
             // echo " [.] Got ", json_encode($response), "\n\n\n <br>";
             $status = Constants::STATUS;
             if(strcmp($response->$status, Constants::SUCCESS) == 0) {
-                // TO-DO Get list of friends and groups and chats
                 return response()->view('home');
             } else {
                 return response()->view('register');

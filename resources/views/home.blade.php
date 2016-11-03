@@ -9,105 +9,40 @@
                     <!-- Centered Pills -->
                     <ul class="nav nav-pills nav-justified">
                         <li class="active">
-                            <a href="#"><span class="fa fa-user"></span> Friend</a>
+                            <a data-toggle="pill" href="#friend-list" id="friend-pane"><span class="fa fa-user"></span> Friend</a>
                         </li>
                         <li>
-                            <a href="#"><span class="fa fa-group"></span> Group</a>
+                            <a data-toggle="pill" href="#group-list" id="group-pane"><span class="fa fa-group"></span> Group</a>
                         </li>
                     </ul>
                 </div>
                 <div class="panel-content">
-                    <div class="nano">
+                    <div class="nano tab-content">
                         <!-- Friend List -->
-                        <ul class="friend-list">
+                        <ul id="friend-list" class="friend-list tab-pane fade in active">
+                            @foreach ($data['friends'] as $friend)
                             <li class="active bounceInDown">
-                            	<a href="#" class="clearfix">
-                            		<img src="/user_default.jpg" alt="" class="img-circle">
-                            		<div class="friend-name">	
-                            			<strong>John Doe</strong>
-                            		</div>
-                            		<div class="last-message text-muted">Hello, Are you there?</div>
-                            		<small class="time text-muted">Just now</small>
-                            		<small class="chat-alert label label-danger">1</small>
-                            	</a>
-                            </li>
-                            <li>
-                            	<a href="#" class="clearfix">
-                            		<img src="/user_default.jpg" alt="" class="img-circle">
-                            		<div class="friend-name">	
-                            			<strong>Jane Doe</strong>
-                            		</div>
-                            		<div class="last-message text-muted">Lorem ipsum dolor sit amet.</div>
-                            		<small class="time text-muted">5 mins ago</small>
-                            	<small class="chat-alert text-muted"><i class="fa fa-check"></i></small>
-                            	</a>
-                            </li> 
-                            <li>
-                            	<a href="#" class="clearfix">
-                            		<img src="/user_default.jpg" alt="" class="img-circle">
-                            		<div class="friend-name">	
-                            			<strong>Kate</strong>
-                            		</div>
-                            		<div class="last-message text-muted">Lorem ipsum dolor sit amet.</div>
-                            		<small class="time text-muted">Yesterday</small>
-                            		<small class="chat-alert text-muted"><i class="fa fa-reply"></i></small>
-                            	</a>
-                            </li>  
-                            <li>
-                            	<a href="#" class="clearfix">
-                            		<img src="/user_default.jpg" alt="" class="img-circle">
-                            		<div class="friend-name">	
-                            			<strong>Kate</strong>
-                            		</div>
-                            		<div class="last-message text-muted">Lorem ipsum dolor sit amet.</div>
-                            		<small class="time text-muted">Yesterday</small>
-                            		<small class="chat-alert text-muted"><i class="fa fa-reply"></i></small>
-                            	</a>
-                            </li>     
-                            <li>
-                            	<a href="#" class="clearfix">
-                            		<img src="/user_default.jpg" alt="" class="img-circle">
-                            		<div class="friend-name">	
-                            			<strong>Kate</strong>
-                            		</div>
-                            		<div class="last-message text-muted">Lorem ipsum dolor sit amet.</div>
-                            		<small class="time text-muted">Yesterday</small>
-                            		<small class="chat-alert text-muted"><i class="fa fa-reply"></i></small>
-                            	</a>
-                            </li>        
-                            <li>
-                            	<a href="#" class="clearfix">
-                            		<img src="/user_default.jpg" alt="" class="img-circle">
-                            		<div class="friend-name">	
-                            			<strong>Kate</strong>
-                            		</div>
-                            		<div class="last-message text-muted">Lorem ipsum dolor sit amet.</div>
-                            		<small class="time text-muted">Yesterday</small>
-                            		<small class="chat-alert text-muted"><i class="fa fa-reply"></i></small>
-                            	</a>
-                            </li>          
-                            <li>
-                            	<a href="#" class="clearfix">
-                            		<img src="/user_default.jpg" alt="" class="img-circle">
-                            		<div class="friend-name">	
-                            			<strong>Kate</strong>
-                            		</div>
-                            		<div class="last-message text-muted">Lorem ipsum dolor sit amet.</div>
-                            		<small class="time text-muted">Yesterday</small>
-                            		<small class="chat-alert text-muted"><i class="fa fa-reply"></i></small>
-                            	</a>
-                            </li>
-                            <li>
                                 <a href="#" class="clearfix">
-                            		<img src="/user_default.jpg" alt="" class="img-circle">
-                            		<div class="friend-name">	
-                            			<strong>Jane Doe</strong>
-                            		</div>
-                            		<div class="last-message text-muted">Lorem ipsum dolor sit amet.</div>
-                            		<small class="time text-muted">5 mins ago</small>
-                            	<small class="chat-alert text-muted"><i class="fa fa-check"></i></small>
-                            	</a>
-                            </li>                 
+                                    <img src="/user_default.jpg" alt="" class="img-circle">
+                                    <div class="friend-name">   
+                                        <strong>{{ $friend }}</strong>
+                                    </div>
+                                </a>
+                            </li>
+                            @endforeach
+                        </ul>
+                        <!-- Group List -->
+                        <ul id="group-list" class="friend-list tab-pane fade in">
+                            @foreach ($data['groups'] as $group)
+                            <li class="active bounceInDown">
+                                <a href="#" class="clearfix">
+                                    <img src="/user_default.jpg" alt="" class="img-circle">
+                                    <div class="friend-name">   
+                                        <strong>{{ $group->group_name }}</strong>
+                                    </div>
+                                </a>
+                            </li>
+                            @endforeach
                         </ul>
                     </div>
                 </div>
