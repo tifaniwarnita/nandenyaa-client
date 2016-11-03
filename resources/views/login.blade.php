@@ -4,6 +4,12 @@
 <div class="container-fluid bootstrap snippet">
     <div class="row">
 		<div class="col-md-4 col-md-offset-4">
+            @if ($response != null)
+            <div class="alert alert-info alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                {{ $response->info }}
+            </div>
+            @endif
             <div class="panel panel-success">
                 <div class="panel-heading">
                     <h3>Login</h3>

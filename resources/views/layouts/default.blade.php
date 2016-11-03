@@ -11,7 +11,7 @@
     </header>
 
     <div id="main" class="row">
-            @yield('content')
+        @yield('content')
     </div>
 
     <footer class="row">

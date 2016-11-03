@@ -38,22 +38,26 @@ class HomeController extends Controller
     }
 
     // Function for View
-    public function index() {
-        $data = [
-            'user' => 'omarcelh',
-            'friends' => [
-                'teman-1',
-                'teman-2',
-                'teman-3'
-            ],
-            'groups' => [
-                'group-1',
-                'group-2',
-                'group-3'
-            ]
-        ];
-        return view('home', compact($data));
+    public function friendIndex($username, $friend_username) {
+        $data = [];
+        if($username != null && $friend_username !=null) {
+            // Get Chat From Friend
+            $data = $this->getData($username);
+            $data['friend_username'] = $friend_username;
+        }
+        return response()->view('home', ['data' => $data, 'response' => null], 200);
     }
+
+    public function groupIndex($username, $group_id) {
+        $data = [];
+        if($username != null && $group_id != null) {
+            // Get Chat From Friend
+            $data = $this->getData($username);
+            $data['group_id'] = $group_id;
+        }
+        // echo json_encode($data);
+        return response()->view('home', ['data' => $data, 'response' => null], 200);
+    }    
 
     public function login(Request $request) {
         $vals = $request->all();
@@ -63,32 +67,13 @@ class HomeController extends Controller
         $status = Constants::STATUS;
         if(strcmp($response->$status, Constants::SUCCESS) == 0) {
             $this->active_user = $vals['username'];
-            $friends = [];
-            $groups = [];
 
-            // Get Friends
-            $response = json_decode($this->call(RequestBuilder::buildGetFriendsMessage($this->active_user)));
-            $friends = $response->friends;
+            $data = $this->getData($this->active_user);
 
-            // TO-DO
-            // Get chat from each friend
-
-            // Get Groups
-            $response = json_decode($this->call(RequestBuilder::buildGetGroupsMessage($this->active_user)));
-            $groups = $response->groups;
-
-            // TO-DO
-            // Get chat from each group
-
-            $data = [
-                'user' => $this->active_user,
-                'friends' => $friends,
-                'groups' => $groups
-            ];
-
-            return response()->view('home', ['data' => $data], 200);
+            $msg = $this->loginSuccess($vals['username']);
+            return response()->view('home', ['data' => $data, 'response' => $response], 200);
         } else {
-            return response()->view('login');
+            return response()->view('login', ['response' => $response]);
         }
     }
 
@@ -96,15 +81,17 @@ class HomeController extends Controller
         $vals = $request->all();
         if($vals['password'] == $vals['password-confirmation']) {
             $response = json_decode($this->call(RequestBuilder::buildRegisterMessage($vals['username'], $vals['password'])));
-            // echo " [.] Got ", json_encode($response), "\n\n\n <br>";
             $status = Constants::STATUS;
             if(strcmp($response->$status, Constants::SUCCESS) == 0) {
-                return response()->view('home');
+                $data = $this->getData($vals['username']);
+                return response()->view('home', ['data' => $data, 'response' => $response], 200);
             } else {
-                return response()->view('register');
+                return response()->view('register', ['response' => $response], 200);
             }
         } else {
-            return response()->view('register');
+            $json = '{"response_type":"login","status":"success","info":"Password confirmation does not match"}';
+            $response = json_decode($json);
+            return response()->view('register', ['response' => $response]);
         }
     }
 
@@ -120,10 +107,20 @@ class HomeController extends Controller
         echo "GOT MESSAGE: ", $this->message;
     }
 
+    public function chat(Request $request) {
+        $vals = $request->all();
+        
+        $response = json_decode($this->call(RequestBuilder::buildPrivateMessage($vals['username'], $vals['friend_username'], $vals['message'])));
+
+        $data = $this->getData($vals['username']);
+        
+        return response()->view('home', ['data' => $data, 'response' => $response], 200);
+    }
+
     public function call($n) {
         $this->response = null;
         $this->corr_id = uniqid();  
-        $arr = array('tifani','acel');
+        
         $msg = new AMQPMessage($n,
             array('correlation_id' => $this->corr_id,
                   'reply_to' => $this->response_queue,
@@ -137,7 +134,7 @@ class HomeController extends Controller
     }
 
     public function loginSuccess($username) {
-        echo "login: ", $username;
+        // echo "login: ", $username;
         $this->active_user = $username;
 
         $this->client_queue = $this->active_user;
@@ -146,24 +143,87 @@ class HomeController extends Controller
             $this->client_queue, '', false, false, false, false,
             array($this, 'on_message'));
 
+        $data = $this->getData($username);
+        return $this->message;
+    }
+
+    public function addFriend(Request $request) {
+        $vals = $request->all();
+        $this->active_user = $vals['username'];
+
+        $response = json_decode($this->call(RequestBuilder::buildAddFriendMessage($vals['username'], $vals['friend_username'])));
+        $data = $this->getData($vals['username']);
+
+        return response()->view('home', ['data' => $data, 'response' => $response], 200);
+    }
+
+     public function createGroup(Request $request) {
+        $vals = $request->all();
+        $this->active_user = $vals['username'];
+
+        $members = explode(" ", $vals['members']);
+
+        $response = json_decode($this->call(RequestBuilder::buildCreateGroupMessage($vals['username'], $vals['group_name'], $members)));
+        $data = $this->getData($vals['username']);
+
+        return response()->view('home', ['data' => $data, 'response' => $response], 200);
+    }
+
+    public function deleteGroup(Request $request) {
+        $vals = $request->all();
+        $this->active_user = $vals['username'];
+
+        $response = json_decode($this->call(RequestBuilder::buildExitGroupMessage($vals['username'], $vals['group_id'])));
+        $data = $this->getData($vals['username']);
+
+        return response()->view('home', ['data' => $data, 'response' => $response], 200);
+
+    }
+
+    public function updateGroup(Request $request) {
+        $vals = $request->all();
+        $this->active_user = $vals['username'];
+
+        $members = explode(" ", $vals['members']);
+
+        $response = json_decode($this->call(RequestBuilder::buildAddGroupMembersMessage($vals['username'], $vals['group_id'], $members)));
+
+        $data = $this->getData($vals['username']);
+
+        return redirect()->route('group.index', ['group_id' => $vals['group_id'], 'username' => $vals['username'], 'data' => $data, 'response' => $response]);
+    }
+
+    public function getData($username) {
+        // Get Friends
+        $response = json_decode($this->call(RequestBuilder::buildGetFriendsMessage($username)));
+        $friends = $response->friends;
+
+        // TO-DO
+        // Get chat from each friend
+
+        // Get Groups
+        $response = json_decode($this->call(RequestBuilder::buildGetGroupsMessage($username)));
+        $groups = $response->groups;
+
+        $group_members = [];
+        foreach ($groups as $group) {
+            $response = json_decode($this->call(RequestBuilder::buildGetGroupMembersMessage($username, $group->group_id)));
+            $group_members[$group->group_id] = $response->group_members;
+        }
+
+        // TO-DO
+        // Get chat from each group
+
         $data = [
-            'user' => 'omarcelh',
-            'friends' => [
-                'teman-1',
-                'teman-2',
-                'teman-3'
-            ],
-            'groups' => [
-                'group-1',
-                'group-2',
-                'group-3'
-            ]
+            'user' => $username,
+            'friends' => $friends,
+            'groups' => $groups,
+            'group_members' => $group_members,
+            'group_id' => null,
+            'friend_username' => null
         ];
 
-        // while(!$this->message) {
-        //     $this->channel->wait();
-        // }
-        return $this->message;
+        return $data;
     }
 }
 

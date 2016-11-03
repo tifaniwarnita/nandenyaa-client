@@ -46,23 +46,23 @@ class RequestBuilder {
         $message = array(
         	Constants::REQUEST_TYPE => Constants::ADD_FRIEND,
         	Constants::USERNAME => $username,
-        	Constants::USER_TO_ADD => userToAdd,
+        	Constants::USER_TO_ADD => $userToAdd,
         	Constants::DATE_TIME => microtime());
         return json_encode($message);
     }
 
     public static function buildCreateGroupMessage($username, $groupName, $members) {
-				$arr = array();
+		$arr = array();
         if ($members != null) {
-					foreach($members as $member) {
-						array_push($arr, $member);
-					}
+			foreach($members as $member) {
+				array_push($arr, $member);
+			}
         }
         $message = array(
         	Constants::REQUEST_TYPE => Constants::CREATE_GROUP,
         	Constants::USERNAME => $username,
         	Constants::GROUP_NAME => $groupName,
-					Constants::MEMBERS => $arr,
+			Constants::MEMBERS => $arr,
         	Constants::DATE_TIME => microtime());
         return json_encode($message);
     }
@@ -70,9 +70,9 @@ class RequestBuilder {
     public static function buildAddGroupMembersMessage($username, $groupId, $newMembers) {
 				$arr = array();
         if ($newMembers != null) {
-					foreach($newMembers as $member) {
-						array_push($arr, $member);
-					}
+			foreach($newMembers as $member) {
+				array_push($arr, $member);
+			}
         }
         $message = array(
         	Constants::REQUEST_TYPE => Constants::ADD_GROUP_MEMBERS,
@@ -84,11 +84,11 @@ class RequestBuilder {
     }
 
     public static function buildRemoveGroupMembersMessage($username, $groupId, $members) {
-				$arr = array();
+		$arr = array();
         if ($members != null) {
-					foreach($members as $member) {
-						array_push($arr, $member);
-					}
+			foreach($members as $member) {
+				array_push($arr, $member);
+			}
         }
         $message = array(
         	Constants::REQUEST_TYPE => Constants::REMOVE_GROUP_MEMBERS,
