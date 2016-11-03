@@ -21,10 +21,7 @@ class NandeNyaaClient {
 		$this->connection = new AMQPStreamConnection(
 			Constants::SERVER_ADDRESS, 5672, 'guest', 'guest');
 		$this->channel = $this->connection->channel();
-
-		$args = array(
-			"x-dead-letter-exchange" =>Constants::DEAD_LETTER_EXCHANGE_NAME);
-
+		
 		list($this->response_queue, ,) = $this->channel->queue_declare(
 			"", false, false, false, true);
 		$this->channel->basic_consume(
@@ -63,11 +60,8 @@ class NandeNyaaClient {
 		echo "login: ", $username;
 		$this->active_user = $username;
 
-		$args = array(
-			"x-dead-letter-exchange" =>Constants::DEAD_LETTER_EXCHANGE_NAME);
-
 		$this->client_queue = $username;
-		$this->channel->queue_declare($this->client_queue, false, false, false, true, $args);
+		$this->channel->queue_declare($this->client_queue, false, false, false, true);
 		$this->channel->basic_consume(
 			$this->client_queue, '', false, false, false, false,
 			array($this, 'on_message'));
